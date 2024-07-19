@@ -1,11 +1,13 @@
-
+import { BrowserRouter as Router } from "react-router-dom"
+import ProjectRoutes from "./Routes"
 
 function App() {
 
   return (
-    <div>
-      <h1>Task Management System</h1>
-    </div>
+    <Router>
+    <ProjectRoutes />
+    </Router>
+
   )
 }
 
