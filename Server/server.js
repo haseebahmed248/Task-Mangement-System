@@ -1,19 +1,16 @@
 import express from 'express'
-import dotenv from 'dotenv'
-import userRoutes from './Routes/userRoutes.js'
-import mongoose from 'mongoose'
 import cors from 'cors'
-
+import dotenv from 'dotenv'
+import mongoose from 'mongoose'
+import userRouter from './routes/userRouter.js'
+import friendRouter from './routes/friendRouter.js'
+import taskRouter from './routes/taskRouter.js'
+dotenv.config()
 
 const app = express()
-dotenv.config()
-const PORT = process.env.PORT
-app.use(express.json())
-app.use(cors({
-    origin: '*',
-    credentials: true
-}))
 
+app.use(cors())
+app.use(express.json())
 mongoose
   .connect(`${process.env.MONGO_URI}`)
   .then(() => {
@@ -21,10 +18,18 @@ mongoose
   })
   .catch((err) => {
     console.log(err);
-  });
+  })
 
-app.use("/api",userRoutes)
 
-app.listen(PORT,()=>{
-    console.log(`Server is running on port ${PORT}`)
+
+
+
+app.use("/api",userRouter);
+app.use("/api/friends",friendRouter);
+app.use('/api/task', taskRouter)
+
+
+
+app.listen(process.env.PORT,()=>{
+    console.log(`Server is running on port ${process.env.PORT}`);    
 })
