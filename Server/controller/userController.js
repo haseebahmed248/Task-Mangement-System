@@ -25,7 +25,7 @@ export const register = async(req,res)=>{
 
 export const login = async(req,res)=>{
     try{
-        const user = await User.findOne({email: req.body.email});
+        const user = await User.findOne({username: req.body.username});
         if (!user) {
             return res.status(404).json("User not found");
         }
@@ -36,12 +36,22 @@ export const login = async(req,res)=>{
         }
         const token = jwt.sign(
             { email: user.email, id: user._id },
-            JWT_SECRET,
-            { expiresIn: JWT_EXPIRATION }
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRATION }
           );
-          res.cookie("token",token)
+      
+          res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
+          });
         res.status(200).json({data:user, token});
     }catch(e){
         res.status(400).send(e);
     }
+}
+
+export const home = (req,res)=>{
+    res.send("success");
 }

@@ -10,8 +10,8 @@ const TaskSchema = new mongoose.Schema({
         required: true
     },
     time: {
-        type: String,
-        required
+        type: Date,
+        required: true
     },
     completed: {
         type: Boolean,
@@ -20,4 +20,5 @@ const TaskSchema = new mongoose.Schema({
     
     }, {timestamps: true});
 
-export default mongoose.model("Task", TaskSchema);
+const Task = mongoose.model('Task', TaskSchema);
+export default Task

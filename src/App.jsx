@@ -11,6 +11,9 @@ import './charts/ChartjsConfig';
 
 // Import pages
 import Dashboard from './pages/Dashboard';
+import AddTask from './components/AddTask';
+import SignIn from './pages/SignIn';
+import LoginIn from './pages/Login';
 
 function App() {
 
@@ -25,7 +28,10 @@ function App() {
   return (
     <>
       <Routes>
-        <Route exact path="/" element={<Dashboard />} />
+        <Route path="/" element={<SignIn />} />
+        <Route path="/login" element={<LoginIn />} />
+        <Route exact path="/dashboard" element={<Dashboard />} />
+        <Route path="/addTask" element={<AddTask />} />
       </Routes>
     </>
   );

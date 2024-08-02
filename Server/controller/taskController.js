@@ -1,5 +1,6 @@
 import Task from "../model/Task.js";
 
+
 export const addTask = async(req,res)=>{
     try{
         const newTask = new Task({
