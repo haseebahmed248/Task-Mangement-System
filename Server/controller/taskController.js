@@ -4,9 +4,10 @@ import Task from "../model/Task.js";
 export const addTask = async(req,res)=>{
     try{
         const newTask = new Task({
-            user: req.body.user,
+            ownerId: req.body.ownerId,
             task: req.body.task,
-            time: req.body.time
+            completed: req.body.completed,
+            dueDate: req.body.dueDate
         });
         const task = await newTask.save();
         res.json(task);
@@ -17,7 +18,7 @@ export const addTask = async(req,res)=>{
 
 export const getTasks = async(req,res)=>{
     try{
-        const tasks = await Task.find({user:req.params.id});
+        const tasks = await Task.find({ownerId:req.params.id});
         res.json(tasks);
     }catch(e){
         res.status(400).json({e});
@@ -52,7 +53,7 @@ export const updateTask = async(req,res)=>{
     try{
         const task = await Task.findOneAndUpdate
         ({user:req.body.user, task:req.body.task},
-            {task:req.body.newTask, time:req.body.newTime});
+            {task:req.body.task, dueDate:req.body.dueDate});
         res.json(task);
     }
     catch(e){

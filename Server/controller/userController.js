@@ -2,16 +2,17 @@ import User from "../model/User.js";
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt'
+import { v4 as uuidv4 } from 'uuid';
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRATION = process.env.JWT_EXPIRATION;
 
 export const register = async(req,res)=>{
     try{
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
         const newUser = new User({  
+            userId: uuidv4(),
             username: req.body.username,
             email: req.body.email,
             password: hashedPassword
@@ -35,7 +36,7 @@ export const login = async(req,res)=>{
             return res.status(400).json("Wrong password");
         }
         const token = jwt.sign(
-            { email: user.email, id: user._id },
+            { email: user.email, id: user._id, userId: user.userId },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRATION }
           );
@@ -52,6 +53,20 @@ export const login = async(req,res)=>{
     }
 }
 
-export const home = (req,res)=>{
-    res.send("success");
-}
+export const home = (req, res) => {
+    if (req.user) {
+      // Send user information along with authentication status
+      res.json({ 
+        authenticated: true, 
+        message: "User is authenticated",
+        user: {
+          id: req.user.id,
+          email: req.user.email,
+          userId: req.user.userId
+          // Add any other user information you want to send
+        }
+      });
+    } else {
+      res.status(401).json({ authenticated: false, message: "User is not authenticated" });
+    }
+  }

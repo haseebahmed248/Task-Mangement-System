@@ -1,6 +1,12 @@
+# Node modules
 node_modules
 .DS_Store
+
+# Build directories
 dist
 dist-ssr
+
+# Local environment files
 *.local
 .env
+/Server/.env

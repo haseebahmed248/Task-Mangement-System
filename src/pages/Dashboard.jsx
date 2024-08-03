@@ -2,20 +2,19 @@ import React, { useEffect } from 'react';
 import FilterButton from '../components/DropdownFilter';
 import Datepicker from '../components/Datepicker';
 import Layout from '../components/Layout';
+import { UserContext } from '../utils/Context/UserContext';
 import axios from 'axios';
 
+
 function Dashboard() {
-  useEffect(()=>{
-    axios.get('http://localhost:4000/api/users/home')
-    .then(res => {
-      if(res.data !== 'success'){
-        console.log('data',res)
-        // window.location.href = '/'
-      }
-    })
-    .catch(err => console.error(err , 'Error'))
-  })
-  
+  const { user } = React.useContext(UserContext);
+  console.log('User:', user);  
+  // useEffect(()=>{
+  //   axios.post("https://u28zkaphvh.execute-api.us-east-1.amazonaws.com/hello?")
+  //   .then((res) => {
+  //     console.log(res)
+  //   })
+  // })
 
   return (
     <Layout>

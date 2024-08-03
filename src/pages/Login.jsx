@@ -1,7 +1,9 @@
 import axios from 'axios';
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../utils/Context/UserContext';
 
 function LoginIn() {
+    const { setUser } = useContext(UserContext);  
     const [error , setError] = React.useState(null);
     const [formData, setFormData] = React.useState({
         username: '',
@@ -14,6 +16,7 @@ function LoginIn() {
         try {
             const response = await axios.post('http://localhost:4000/api/users/login', formData);
             console.log('User logged in:', response.data);
+            setUser(response.data.data);
             window.location.href = '/dashboard';
         } catch (error) {
             console.error('Error logging in:', error);
